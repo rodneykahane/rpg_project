@@ -12,18 +12,13 @@ public class Mover : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-
             MoveToCursor();  
-
         }
 
-        // test
-
-        //Debug.DrawRay(lastRay.origin, lastRay.direction * 100);
-        //lastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        
+        UpdateAnimator();
     }
+
+   
 
     private void MoveToCursor()
     {
@@ -36,5 +31,13 @@ public class Mover : MonoBehaviour
             Debug.Log("we have hit");
             GetComponent<NavMeshAgent>().destination = hit.point;
         }
+    }
+
+    private void UpdateAnimator()
+    {
+        Vector3 velocity = GetComponent<NavMeshAgent>().velocity;
+        Vector3 localVelocity = transform.InverseTransformDirection(velocity);
+        float speed = localVelocity.z;
+        GetComponent<Animator>().SetFloat("forwardSpeed", speed);
     }
 }
