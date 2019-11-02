@@ -16,6 +16,9 @@ public class Mover : MonoBehaviour
             MoveToCursor();  
 
         }
+
+        // test
+
         //Debug.DrawRay(lastRay.origin, lastRay.direction * 100);
         //lastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 
