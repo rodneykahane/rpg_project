@@ -1,22 +1,24 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using RPG.Combat;
 using RPG.Movement;
-using RPG.Combat;
+using UnityEngine;
 
 namespace RPG.Control
 {
     public class PlayerController : MonoBehaviour
     {
 
+        Ray lastRay;  //raytracing debug
+
         void Update()
         {
-            InteractWithCombat();
-            InertactWithMovement();
+            if (InteractWithCombat()) return;
+
+            if (InertactWithMovement()) return;
+
+            Debug.Log("Nothing to do");
         }
 
-        private void InteractWithCombat()
+        private bool InteractWithCombat()
         {
             RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
             foreach (RaycastHit hit in hits)
@@ -26,33 +28,44 @@ namespace RPG.Control
 
                 if (Input.GetMouseButtonDown(0))
                 {
+                   // lastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
                     GetComponent<Fighter>().Attack(target);
                 }
+               // Debug.DrawRay(lastRay.origin, lastRay.direction * 100, Color.blue);
+                return true;
             }
+
+            return false;
         }
 
-        private void InertactWithMovement()
-        {
-            if (Input.GetMouseButton(0))
-            {
-                MoveToCursor();
-            }
-        }
-
-        private void MoveToCursor()
+        private bool InertactWithMovement()
         {
             RaycastHit hit;
             bool hasHit = Physics.Raycast(GetMouseRay(), out hit);
 
             if (hasHit)
             {
-                //Debug.Log("we have hit");
-                GetComponent<Mover>().MoveTo(hit.point);
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Debug.Log("we have hit");
+                  //  lastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    GetComponent<Mover>().MoveTo(hit.point);
+
+                }
+                //Debug.DrawRay(lastRay.origin, lastRay.direction * 100, Color.blue);
+                return true;
             }
+            return false;
         }
 
         private static Ray GetMouseRay()
         {
+            //debug raycasting
+            /*
+            lastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Debug.DrawRay(lastRay.origin, lastRay.direction * 100, Color.blue);
+            return lastRay;
+            */
             return Camera.main.ScreenPointToRay(Input.mousePosition);
         }
     }
