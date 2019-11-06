@@ -5,10 +5,7 @@ using UnityEngine;
 namespace RPG.Control
 {
     public class PlayerController : MonoBehaviour
-    {
-
-        Ray lastRay;  //raytracing debug
-
+    {  
         void Update()
         {
             if (InteractWithCombat()) return;
@@ -28,10 +25,9 @@ namespace RPG.Control
 
                 if (Input.GetMouseButtonDown(0))
                 {
-                   // lastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
                     GetComponent<Fighter>().Attack(target);
                 }
-               // Debug.DrawRay(lastRay.origin, lastRay.direction * 100, Color.blue);
+
                 return true;
             }
 
@@ -47,12 +43,11 @@ namespace RPG.Control
             {
                 if (Input.GetMouseButtonDown(0))
                 {
-                    Debug.Log("we have hit");
-                  //  lastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    GetComponent<Mover>().MoveTo(hit.point);
+                    //Debug.Log("we have hit");
+                    GetComponent<Mover>().StartMoveAction(hit.point);
 
                 }
-                //Debug.DrawRay(lastRay.origin, lastRay.direction * 100, Color.blue);
+
                 return true;
             }
             return false;
@@ -60,14 +55,8 @@ namespace RPG.Control
 
         private static Ray GetMouseRay()
         {
-            //debug raycasting
-            /*
-            lastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Debug.DrawRay(lastRay.origin, lastRay.direction * 100, Color.blue);
-            return lastRay;
-            */
+
             return Camera.main.ScreenPointToRay(Input.mousePosition);
         }
     }
-
 }
