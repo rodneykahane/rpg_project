@@ -22,7 +22,7 @@ namespace RPG.Combat
 
             if (target == null) return;
 
-            if (target.IsDead()) return;            
+            if (target.IsDead()) return;
 
             if (target != null && !GetIsInRange())
             {
@@ -48,13 +48,20 @@ namespace RPG.Combat
 
         //Animation Event
         void Hit()
-        {            
-            target.TakeDamage(weaponDamage);            
+        {
+            target.TakeDamage(weaponDamage);
         }
 
         private bool GetIsInRange()
         {
             return Vector3.Distance(transform.position, target.transform.position) < weaponRange;
+        }
+
+        public bool CanAttack(CombatTarget combatTarget)
+        {
+            if (combatTarget == null) { return false; }
+            Health targetToTest = combatTarget.GetComponent<Health>();
+            return targetToTest != null && !targetToTest.IsDead();  //returns true if target is not null and target is not dead
         }
 
         public void Attack(CombatTarget combatTarget)
