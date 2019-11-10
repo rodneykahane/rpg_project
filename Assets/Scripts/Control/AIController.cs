@@ -1,6 +1,7 @@
 ﻿using RPG.Combat;
 using RPG.Core;
 using RPG.Movement;
+using System;
 using UnityEngine;
 
 namespace RPG.Control
@@ -9,6 +10,8 @@ namespace RPG.Control
     {
         [SerializeField] float chaseDistance = 5f;
         [SerializeField] float suspicionTime = 3f;
+        [SerializeField] PatrolPath patrolPath;
+        [SerializeField] float waypointTolerance = 1f;
 
         Fighter fighter;
         Health health;
@@ -43,10 +46,10 @@ namespace RPG.Control
             }
             else
             {
-                GuardBehavior();  //couldnt find player, head back to starting point
+                PatrolBehavior();  //couldnt find player, head back to starting point
             }
 
-            timeSinceLastSawPlayer += Time.deltaTime;            
+            timeSinceLastSawPlayer += Time.deltaTime;
         }
 
         private void AttackBehavior()
@@ -56,12 +59,39 @@ namespace RPG.Control
 
         private void SuspicionBehavior()
         {
-            GetComponent<ActionScheduler>().CancelCurrentAction();            
+            GetComponent<ActionScheduler>().CancelCurrentAction();
         }
 
-        private void GuardBehavior()
+        private void PatrolBehavior()
         {
+            Vector3 nextPosition = guardPosition;
+
+            if (patrolPath != null)
+            {
+                if (AtWayPoint())
+                {
+                    CycleWayPoint();
+                }
+                nextPosition = GetCurrentWaypoint();
+            }
+
             mover.StartMoveAction(guardPosition);
+        }
+
+        private bool AtWayPoint()
+        {
+            float distanceToWaypoint = Vector3.Distance(this.transform.position, GetCurrentWaypoint());
+            return distanceToWaypoint < waypointTolerance;
+        }
+
+        private void CycleWayPoint()
+        {
+            throw new NotImplementedException();
+        }
+
+        private Vector3 GetCurrentWaypoint()
+        {
+            throw new NotImplementedException();
         }
 
         private bool InAttackRangeOfPlayer()
