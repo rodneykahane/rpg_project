@@ -7,6 +7,7 @@ namespace RPG.Control
     public class AIController : MonoBehaviour
     {
         [SerializeField] float chaseDistance = 5f;
+        [SerializeField] Vector3 guardOrigin;
 
         Fighter fighter;
         Health health;
@@ -30,6 +31,7 @@ namespace RPG.Control
             else
             {
                 fighter.Cancel();
+                fighter.transform.TransformDirection(guardOrigin);
             }
         }
 
