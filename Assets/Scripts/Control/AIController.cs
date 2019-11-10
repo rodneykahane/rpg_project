@@ -1,23 +1,29 @@
 ﻿using RPG.Combat;
 using RPG.Core;
+using RPG.Movement;
 using UnityEngine;
 
 namespace RPG.Control
 {
     public class AIController : MonoBehaviour
     {
-        [SerializeField] float chaseDistance = 5f;
-        [SerializeField] Vector3 guardOrigin;
+        [SerializeField] float chaseDistance = 5f;        
 
         Fighter fighter;
         Health health;
         GameObject player;
+        Mover mover;
+
+        Vector3 guardPosition;
 
         private void Start()
         {
             fighter = GetComponent<Fighter>();
             health = GetComponent<Health>();
+            mover = GetComponent<Mover>();
             player = GameObject.FindGameObjectWithTag("Player");
+
+            guardPosition = this.transform.position;
         }
 
         private void Update()
@@ -30,10 +36,9 @@ namespace RPG.Control
             }
             else
             {
-                fighter.Cancel();
-                fighter.transform.TransformDirection(guardOrigin);
+                mover.StartMoveAction(guardPosition);
             }
-        }
+        }        
 
         private bool InAttackRangeOfPlayer()
         {
