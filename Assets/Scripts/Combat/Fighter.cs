@@ -7,14 +7,12 @@ namespace RPG.Combat
 
     public class Fighter : MonoBehaviour, IAction
     {
-
-
         [SerializeField] float weaponRange = 2f;
         [SerializeField] float timeBetweenAttacks = 1f;
         [SerializeField] float weaponDamage = 5f;
 
         Health target;
-        float timeSinceLastAttack = 0f;
+        float timeSinceLastAttack = Mathf.Infinity;
 
         private void Update()
         {

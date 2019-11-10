@@ -9,6 +9,7 @@ namespace RPG.Movement
         [SerializeField] Transform target;
 
         NavMeshAgent navMeshAgent;
+        Health health;
 
         private void Start()
         {
@@ -17,12 +18,15 @@ namespace RPG.Movement
 
         void Update()
         {
+
+            navMeshAgent.enabled = !health.IsDead();  //naveMeshAgent is disabled if character is dead
+
             UpdateAnimator();
         }
 
         public void StartMoveAction(Vector3 destination)
         {
-            GetComponent<ActionScheduler>().StartAction(this);            
+            GetComponent<ActionScheduler>().StartAction(this);
             MoveTo(destination);
         }
 
@@ -37,7 +41,7 @@ namespace RPG.Movement
             navMeshAgent.isStopped = true;
         }
 
-    
+
         private void UpdateAnimator()
         {
             Vector3 velocity = navMeshAgent.velocity;
