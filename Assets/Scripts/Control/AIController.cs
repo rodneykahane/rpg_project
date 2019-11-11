@@ -75,24 +75,18 @@ namespace RPG.Control
             {
                 if (AtWayPoint())
                 {
+                    waypointWaitTime = 0f;
                     CycleWayPoint();
                 }
                 nextPosition = GetCurrentWaypoint();
             }
 
-            WaypointDwellTime(nextPosition);
-        }
-
-        private void WaypointDwellTime(Vector3 nextPosition)
-        {
             if (waypointWaitTime > waypointDwellTime)
             {
-                waypointWaitTime = 0f;
+
                 mover.StartMoveAction(nextPosition);
             }
-
-            UpdateTimers();
-        }
+        }      
 
         private void UpdateTimers()
         {
