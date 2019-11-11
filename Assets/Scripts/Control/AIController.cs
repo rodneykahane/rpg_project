@@ -21,6 +21,8 @@ namespace RPG.Control
         Vector3 guardPosition;
         float timeSinceLastSawPlayer = Mathf.Infinity;
 
+        int currentWaypointIndex = 0; //patrol node counter
+
         private void Start()
         {
             fighter = GetComponent<Fighter>();
@@ -75,7 +77,7 @@ namespace RPG.Control
                 nextPosition = GetCurrentWaypoint();
             }
 
-            mover.StartMoveAction(guardPosition);
+            mover.StartMoveAction(nextPosition);
         }
 
         private bool AtWayPoint()
@@ -86,12 +88,12 @@ namespace RPG.Control
 
         private void CycleWayPoint()
         {
-            throw new NotImplementedException();
+            currentWaypointIndex = patrolPath.GetNextIndex(currentWaypointIndex);
         }
 
         private Vector3 GetCurrentWaypoint()
         {
-            throw new NotImplementedException();
+            return patrolPath.GetWaypoint(currentWaypointIndex);
         }
 
         private bool InAttackRangeOfPlayer()
